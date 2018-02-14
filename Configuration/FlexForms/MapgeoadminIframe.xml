@@ -10,15 +10,35 @@
                 </TCEforms>
                 <type>array</type>
                 <el>
-                    <settings.iframeParams>
+                    <settings.iframe.srcParam>
                         <TCEforms>
-                            <label><![CDATA[iframe params after ?lang=xx&...]]></label>
+                            <label><![CDATA[iframe src params after ?lang=xx&...]]></label>
                             <config>
                                 <type>input</type>
                                 <size>255</size>
                             </config>
                         </TCEforms>
-                    </settings.iframeParams>
+                    </settings.iframe.srcParam>
+                    <settings.iframe.width>
+                        <TCEforms>
+                            <label>Width (px or %)</label>
+                            <config>
+                                <default>100%</default>
+                                <type>input</type>
+                                <size>10</size>
+                            </config>
+                        </TCEforms>
+                    </settings.iframe.width>
+                    <settings.iframe.height>
+                        <TCEforms>
+                            <label>Height (px or %)</label>
+                            <config>
+                                <default>300px</default>
+                                <type>input</type>
+                                <size>10</size>
+                            </config>
+                        </TCEforms>
+                    </settings.iframe.height>
                 </el>
             </ROOT>
         </sDEF>

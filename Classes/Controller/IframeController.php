@@ -1,5 +1,5 @@
 <?php
-namespace Saccas\Mapgeoadmin\dmin\Controller;
+namespace Saccas\Mapgeoadmin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -7,6 +7,12 @@ class IframeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 {
     public function indexAction()
     {
-        return 'test';
+        if($GLOBALS['TSFE']->sys_language_isocode) {
+            $sys_language_isocode = $GLOBALS['TSFE']->sys_language_isocode;
+        } else {
+            $sys_language_isocode = $GLOBALS['TSFE']->sys_language_isocode_default;
+        }
+
+        $this->view->assign('sys_language_isocode', $GLOBALS['TSFE']->sys_language_isocode);
     }
 }
