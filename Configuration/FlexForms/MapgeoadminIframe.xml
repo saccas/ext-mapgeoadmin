@@ -1,0 +1,26 @@
+<T3DataStructure>
+    <meta>
+        <langDisable>1</langDisable>
+    </meta>
+    <sheets>
+        <sDEF>
+            <ROOT>
+                <TCEforms>
+                    <sheetTitle>Map geo admin / iframe</sheetTitle>
+                </TCEforms>
+                <type>array</type>
+                <el>
+                    <settings.iframeParams>
+                        <TCEforms>
+                            <label><![CDATA[iframe params after ?lang=xx&...]]></label>
+                            <config>
+                                <type>input</type>
+                                <size>255</size>
+                            </config>
+                        </TCEforms>
+                    </settings.iframeParams>
+                </el>
+            </ROOT>
+        </sDEF>
+    </sheets>
+</T3DataStructure>
