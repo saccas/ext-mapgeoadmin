@@ -1,5 +1,5 @@
 <?php
-namespace Saccas\MapGeoAdmin\Controller;
+namespace Saccas\Mapgeoadmin\dmin\Controller;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 

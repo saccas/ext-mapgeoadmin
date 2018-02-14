@@ -6,12 +6,12 @@
     "license": ["GPL-2.0+"],
     "autoload": {
         "psr-4": {
-            "Saccas\\MapGeoAdmin\\": "Classes"
+            "Saccas\\Mapgeoadmin\\": "Classes"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Saccas\\MapGeoAdmin\\Tests\\": "Tests"
+            "Saccas\\Mapgeoadmin\\Tests\\": "Tests"
         }
     },
     "require": {

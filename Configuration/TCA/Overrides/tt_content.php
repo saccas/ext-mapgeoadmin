@@ -8,7 +8,7 @@ $pluginName = 'Embed';
     'Saccas.' . $extensionKey,
     $pluginName,
     'Map geo admin / iframe',
-    'EXT:map_geo_admin/Resources/Public/Icons/Extension.png'
+    'EXT:mapgeoadmin/Resources/Public/Icons/Extension.png'
 );
 
 $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['mapgeoadmin_embed'] = 'recursive,select_key,pages';
