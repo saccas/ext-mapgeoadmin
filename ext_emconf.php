@@ -13,7 +13,7 @@ $EM_CONF[$_EXTKEY] = [
     'author_company' => '',
     'autoload' =>
         [
-            'psr-4' => ['Saccas\\MapGeoAdmin\\' => 'Classes']
+            'psr-4' => ['Saccas\\Mapgeoadmin\\' => 'Classes']
         ],
     'constraints' => [
         'depends' => [
