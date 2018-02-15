@@ -2,7 +2,7 @@
 
 $EM_CONF[$_EXTKEY] = [
     'title' => 'Map geo admin',
-    'description' => 'Map geo admin',
+    'description' => 'Map geo admin iframe integration',
     'category' => 'misc',
     'shy' => 0,
     'version' => '1.0.0',
