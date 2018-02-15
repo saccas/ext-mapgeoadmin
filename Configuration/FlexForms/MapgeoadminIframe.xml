@@ -10,15 +10,15 @@
                 </TCEforms>
                 <type>array</type>
                 <el>
-                    <settings.iframe.srcParam>
+                    <settings.mapgeoadmin.url>
                         <TCEforms>
-                            <label><![CDATA[iframe src params after ?lang=xx&...]]></label>
+                            <label>Map geo admin url (is converted to embed)</label>
                             <config>
                                 <type>input</type>
                                 <size>255</size>
                             </config>
                         </TCEforms>
-                    </settings.iframe.srcParam>
+                    </settings.mapgeoadmin.url>
                     <settings.iframe.width>
                         <TCEforms>
                             <label>Width (px or %)</label>

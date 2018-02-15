@@ -5,14 +5,24 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class IframeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
 {
+    protected $iframeEmbedUrl = 'https://map.geo.admin.ch/embed.html';
+
     public function indexAction()
     {
-        if($GLOBALS['TSFE']->sys_language_isocode) {
-            $sys_language_isocode = $GLOBALS['TSFE']->sys_language_isocode;
-        } else {
-            $sys_language_isocode = $GLOBALS['TSFE']->sys_language_isocode_default;
-        }
+        $tsfe = $this->getTsfe();
 
-        $this->view->assign('sys_language_isocode', $GLOBALS['TSFE']->sys_language_isocode);
+        $urlParams = (parse_url($this->settings['mapgeoadmin']['url'], PHP_URL_QUERY));
+
+        $iframeLinkConf = [
+            'parameter' => $this->iframeEmbedUrl . '?' . htmlspecialchars($urlParams),
+        ];
+
+        $iframeSrc = $tsfe->cObj->typoLink_URL($iframeLinkConf);
+        $this->view->assign('iframeSrc', $iframeSrc);
+    }
+
+    private function getTsfe()
+    {
+        return $GLOBALS['TSFE'];
     }
 }
