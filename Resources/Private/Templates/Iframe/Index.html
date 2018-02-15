@@ -1,6 +1,10 @@
-<iframe src="{iframeSrc}"
-				width="{f:if(condition: settings.iframe.width, then: '{settings.iframe.width}', else: '100%')}"
-				height="{f:if(condition: settings.iframe.height, then: settings.iframe.height, else: '300px')}"
-				frameborder="0"
-				style="border:0"
-></iframe>
+<f:layout name="Default" />
+
+<f:section name="iframe">
+	<iframe src="{iframeSrc}"
+					width="{f:if(condition: settings.iframe.width, then: '{settings.iframe.width}', else: '100%')}"
+					height="{f:if(condition: settings.iframe.height, then: settings.iframe.height, else: '300px')}"
+					frameborder="0"
+					style="border:0"
+	></iframe>
+</f:section>
