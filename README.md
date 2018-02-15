@@ -1,4 +1,4 @@
-# Map Gep Admin
+# Map Geo Admin
 
 A simple integration to the iframe.
 
