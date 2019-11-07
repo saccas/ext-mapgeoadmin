@@ -5,7 +5,7 @@ $EM_CONF[$_EXTKEY] = [
     'description' => 'Map geo admin iframe integration',
     'category' => 'misc',
     'shy' => 0,
-    'version' => '1.0.0',
+    'version' => '1.0.1',
     'state' => 'stable',
     'clearCacheOnLoad' => 1,
     'author' => '',
@@ -17,7 +17,7 @@ $EM_CONF[$_EXTKEY] = [
         ],
     'constraints' => [
         'depends' => [
-            'typo3' => '8.7.0-8.7.99',
+            'typo3' => '8.7.13-9.5.99',
         ],
         'conflicts' => [
         ],
