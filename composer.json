@@ -3,7 +3,7 @@
     "description": "map geo admin extension https://map.geo.admin.ch",
     "type": "typo3-cms-extension",
     "homepage": "https://map.geo.admin.ch",
-    "license": ["GPL-2.0+"],
+    "license": ["GPL-2.0-or-later"],
     "autoload": {
         "psr-4": {
             "Saccas\\Mapgeoadmin\\": "Classes"
@@ -16,7 +16,7 @@
     },
     "require": {
         "php": ">=7.0.0 <=7.2.99",
-		"typo3/cms-core": "^8.7.13 || ^9.5.0"
+	"typo3/cms-core": "^8.7.13 || ^9.5.0"
     },
     "require-dev": {
         "squizlabs/php_codesniffer": "^3.2.0",
@@ -36,7 +36,6 @@
         ]
     },
     "replace": {
-        "mapgeoadmin": "self.version",
         "typo3-ter/mapgeoadmin": "self.version"
     },
     "extra": {
