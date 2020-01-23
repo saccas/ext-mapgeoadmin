@@ -29,12 +29,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress --no-suggest
-      
-      - name: OSKAR-PHP-CS-Fixer
-        uses: OskarStark/php-cs-fixer-ga@2.15.3
-        with:
-          args: --diff --dry-run
-        
 
 #      - name: Run test suite
 #        run: composer run-script test
