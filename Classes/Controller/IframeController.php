@@ -14,7 +14,7 @@ class IframeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
         $urlParams = (parse_url($this->settings['mapgeoadmin']['url'], PHP_URL_QUERY));
 
         $iframeLinkConf = [
-            'parameter' => $this->iframeEmbedUrl . '?' . htmlspecialchars($urlParams),
+            'parameter' => $this->iframeEmbedUrl . '?' . $urlParams,
         ];
 
         $iframeSrc = $tsfe->cObj->typoLink_URL($iframeLinkConf);
