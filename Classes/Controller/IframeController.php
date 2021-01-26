@@ -7,7 +7,7 @@ class IframeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionControlle
 {
     protected $iframeEmbedUrl = 'https://map.geo.admin.ch/embed.html';
 
-    public function indexAction()
+    public function indexAction(): void
     {
         $tsfe = $this->getTsfe();
 
