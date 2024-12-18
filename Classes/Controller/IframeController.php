@@ -1,9 +1,10 @@
 <?php
+
 namespace Saccas\Mapgeoadmin\Controller;
 
-use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
-class IframeController extends \TYPO3\CMS\Extbase\Mvc\Controller\ActionController
+class IframeController extends ActionController
 {
     protected $iframeEmbedUrl = 'https://map.geo.admin.ch/embed.html';
 

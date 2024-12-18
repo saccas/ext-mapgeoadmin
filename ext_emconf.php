@@ -14,7 +14,7 @@ $EM_CONF[$_EXTKEY] = [
     'autoload' => [
         'psr-4' => [
             'Saccas\\Mapgeoadmin\\' => 'Classes',
-        ]
+        ],
     ],
     'constraints' => [
         'depends' => [
