@@ -1,17 +1,23 @@
 <?php
-defined('TYPO3_MODE') or die();
 
-$extensionKey = 'mapgeoadmin';
-$pluginName = 'Embed';
+use TYPO3\CMS\Core\Utility\ExtensionManagementUtility;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::registerPlugin(
-    'Saccas.' . $extensionKey,
-    $pluginName,
-    'Map geo admin / iframe',
-    'EXT:mapgeoadmin/Resources/Public/Icons/Extension.png'
-);
+defined('TYPO3') or die();
 
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist']['mapgeoadmin_embed'] = 'recursive,select_key,pages';
+(static function ($extensionKey) {
+    ExtensionUtility::registerPlugin(
+        'Mapgeoadmin',
+        'Embed',
+        'Map geo admin / iframe',
+        'EXT:mapgeoadmin/Resources/Public/Icons/Extension.png'
+    );
 
-$GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist']['mapgeoadmin_embed'] = 'pi_flexform';
-\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPiFlexFormValue('mapgeoadmin_embed', 'FILE:EXT:mapgeoadmin/Configuration/FlexForms/MapgeoadminIframe.xml');
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_excludelist'][$extensionKey . '_embed'] = 'recursive,select_key,pages';
+    $GLOBALS['TCA']['tt_content']['types']['list']['subtypes_addlist'][$extensionKey . '_embed'] = 'pi_flexform';
+
+    ExtensionManagementUtility::addPiFlexFormValue(
+        $extensionKey . '_embed',
+        'FILE:EXT:' . $extensionKey . '/Configuration/FlexForms/MapgeoadminIframe.xml'
+    );
+})('mapgeoadmin');

@@ -1,0 +1,17 @@
+# macOS
+.DS_Store
+
+# ide
+.project
+.buildpath
+.settings
+.nbproject
+.idea
+!/.idea/inspectionProfiles/Project_Default.xml
+
+# php-cs-fixer
+.php_cs.cache
+.php-cs-fixer.cache
+
+#
+.Build

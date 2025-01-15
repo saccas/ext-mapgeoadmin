@@ -1,14 +1,15 @@
 <?php
-defined('TYPO3_MODE') or die();
 
-(function ($extkey) {
+defined('TYPO3') or die();
+
+(static function () {
     \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        'Saccas.' . $extkey,
+        'Mapgeoadmin',
         'Embed',
         [
-            'Iframe' => 'index',
+            \Saccas\Mapgeoadmin\Controller\IframeController::class => 'index',
         ],
         [
         ]
     );
-})('mapgeoadmin');
+})();
