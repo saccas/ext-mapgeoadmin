@@ -18,38 +18,40 @@
 		"typo3/cms-frontend": "^11.5.16 || ^13.4"
     },
 	"require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.65",
-        "ssch/typo3-rector": "^2.12",
-        "typo3/cms-install": "^11.5.16 || ^13.4",
-        "typo3/coding-standards": "^0.7.1"
+		"a9f/typo3-fractor": "^0.5.0",
+		"phpstan/extension-installer": "^1.4",
+		"phpstan/phpstan": "^2.1",
+		"saschaegerer/phpstan-typo3": "^2.1",
+		"ssch/typo3-rector": "^3.1",
+		"typo3/coding-standards": "^0.8.0",
+        "typo3/cms-install": "^11.5.16 || ^13.4"
     },
     "scripts": {
         "lint": [
             "! find Classes -type f -name \"*.php\" -exec php -d error_reporting=32767 -l {} \\; 2>&1 >&- | grep \"^\"",
             "! find Tests -type f -name \"*.php\" -exec php -d error_reporting=32767 -l {} \\; 2>&1 >&- | grep \"^\""
         ],
-		"cs": "./.Build/bin/php-cs-fixer fix --dry-run -v --config ./Build/php-cs-fixer.php",
-		"rector": "./.Build/bin/rector process -v --dry-run --config=./Build/rector.php --output-format=console"
+		"cs": "./.Build/vendor/bin/php-cs-fixer fix -v --config=./Build/.php-cs-fixer.php --diff --dry-run ",
+		"rector": "./.Build/vendor/bin/rector process -v --config=./Build/rector.php --output-format=console --dry-run"
 	},
     "replace": {
         "typo3-ter/mapgeoadmin": "self.version"
     },
 	"config": {
-		"bin-dir": ".Build/bin",
 		"lock":false,
 		"sort-packages": true,
 		"vendor-dir": ".Build/vendor",
         "allow-plugins": {
-            "typo3/class-alias-loader": true,
-            "typo3/cms-composer-installers": true
+			"a9f/fractor-extension-installer": true,
+			"phpstan/extension-installer": true,
+			"typo3/class-alias-loader": true,
+			"typo3/cms-composer-installers": true
         }
 	},
     "extra": {
         "typo3/cms": {
-			"app-dir": ".Build",
             "extension-key": "mapgeoadmin",
-            "cms-package-dir": "{$vendor-dir}/typo3/cms",
-            "web-dir": ".Build/web"
+            "web-dir": ".Build/public"
         }
     }
 }
