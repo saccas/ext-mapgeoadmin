@@ -1,3 +1,4 @@
+<?xml version="1.0"?>
 <T3DataStructure>
     <meta>
         <langDisable>1</langDisable>
@@ -5,39 +6,31 @@
     <sheets>
         <sDEF>
             <ROOT>
-                <TCEforms>
-                    <sheetTitle>Map geo admin / iframe</sheetTitle>
-                </TCEforms>
+                <sheetTitle>Map geo admin / iframe</sheetTitle>
                 <type>array</type>
                 <el>
                     <settings.mapgeoadmin.url>
-                        <TCEforms>
-                            <label>Map geo admin url (is converted to embed)</label>
-                            <config>
-                                <type>input</type>
-                                <size>255</size>
-                            </config>
-                        </TCEforms>
+                        <label>Map geo admin url (is converted to embed)</label>
+                        <config>
+                            <type>input</type>
+                            <size>255</size>
+                        </config>
                     </settings.mapgeoadmin.url>
                     <settings.iframe.width>
-                        <TCEforms>
-                            <label>Width (px or %)</label>
-                            <config>
-                                <default>100%</default>
-                                <type>input</type>
-                                <size>10</size>
-                            </config>
-                        </TCEforms>
+                        <label>Width (px or %)</label>
+                        <config>
+                            <default>100%</default>
+                            <type>input</type>
+                            <size>10</size>
+                        </config>
                     </settings.iframe.width>
                     <settings.iframe.height>
-                        <TCEforms>
-                            <label>Height (px or %)</label>
-                            <config>
-                                <default>300px</default>
-                                <type>input</type>
-                                <size>10</size>
-                            </config>
-                        </TCEforms>
+                        <label>Height (px or %)</label>
+                        <config>
+                            <default>300px</default>
+                            <type>input</type>
+                            <size>10</size>
+                        </config>
                     </settings.iframe.height>
                 </el>
             </ROOT>
