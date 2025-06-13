@@ -1,32 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Saccas\Mapgeoadmin\Controller;
 
 use Psr\Http\Message\ResponseInterface;
+use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
+use Saccas\Mapgeoadmin\Service\EmbedUrlService;
 use TYPO3\CMS\Extbase\Mvc\Controller\ActionController;
 
 class IframeController extends ActionController
 {
-    protected $iframeEmbedUrl = 'https://map.geo.admin.ch/embed.html';
+    public function __construct(
+        private readonly EmbedUrlService $embedUrlService,
+        private readonly LoggerInterface $logger,
+    ) {
+    }
 
     public function indexAction(): ResponseInterface
     {
-        $tsfe = $this->getTsfe();
+        $iFrameUri = '';
 
-        $urlParams = (parse_url((string)$this->settings['mapgeoadmin']['url'], PHP_URL_QUERY));
+        try {
+            $iFrameUri = $this->embedUrlService->getEmbededUrl($this->settings);
+        } catch (\RuntimeException $e) {
+            $this->logger->log(LogLevel::ERROR, $e->getMessage());
+        }
 
-        $iframeLinkConf = [
-            'parameter' => $this->iframeEmbedUrl . '?' . $urlParams,
-        ];
-
-        $iframeSrc = $tsfe->cObj->typoLink_URL($iframeLinkConf);
-        $this->view->assign('iframeSrc', $iframeSrc);
+        $this->view->assign('iframeSrc', $iFrameUri);
 
         return $this->htmlResponse();
-    }
-
-    private function getTsfe()
-    {
-        return $GLOBALS['TSFE'];
     }
 }
