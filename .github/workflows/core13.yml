@@ -3,7 +3,7 @@ name: core 13
 on: [ push, pull_request ]
 
 env:
-  COMPOSER_FLAGS: --no-ansi --no-interaction --no-scripts --no-progress --no-dev
+  COMPOSER_FLAGS: --no-ansi --no-interaction --no-progress
   COMPOSER_INSTALL_FLAGS: -q --prefer-dist
 
 jobs:
