@@ -1,15 +1,14 @@
 <?php
 
-defined('TYPO3') or die();
+use Saccas\Mapgeoadmin\Controller\IframeController;
+use TYPO3\CMS\Extbase\Utility\ExtensionUtility;
 
-(static function () {
-    \TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-        'Mapgeoadmin',
-        'Embed',
-        [
-            \Saccas\Mapgeoadmin\Controller\IframeController::class => 'index',
-        ],
-        [
-        ]
-    );
-})();
+ExtensionUtility::configurePlugin(
+    'Mapgeoadmin',
+    'Embed',
+    [
+        IframeController::class => 'index',
+    ],
+    [],
+    ExtensionUtility::PLUGIN_TYPE_CONTENT_ELEMENT
+);
