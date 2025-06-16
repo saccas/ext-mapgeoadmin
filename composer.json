@@ -33,7 +33,7 @@
         ],
 		"cs": "./.Build/vendor/bin/php-cs-fixer fix -v --config=./Build/.php-cs-fixer.php --diff --dry-run",
 		"rector": "./.Build/vendor/bin/rector process -v --config=./Build/rector.php --output-format=console --dry-run",
-		"fractor": "./.Build/vendor/bin/fractor process -v --config=./Build/fractor.php --output-format=console --dry-run"
+		"fractor": "./.Build/vendor/bin/fractor process -v --config=./Build/fractor.php --dry-run"
 	},
     "replace": {
         "typo3-ter/mapgeoadmin": "self.version"
