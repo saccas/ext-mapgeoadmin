@@ -1,0 +1,92 @@
+name: core 13
+
+on: [ push, pull_request ]
+
+env:
+  COMPOSER_FLAGS: --no-ansi --no-interaction --no-progress
+  COMPOSER_INSTALL_FLAGS: -q --prefer-dist
+
+jobs:
+  php_coding_standards:
+    name: PHP Coding Standards
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '8.3' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          extensions: intl, zip
+          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
+          php-version: ${{ matrix.php-version }}
+
+      - name: Install dependencies
+        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+
+      - name: Run PHP lint
+        run: composer run cs
+
+  php_rector:
+    name: Rector
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '8.3' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          extensions: intl, zip
+          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
+          php-version: ${{ matrix.php-version }}
+
+      - name: Install dependencies
+        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+
+      - name: Run rector
+        run: composer rector
+
+  php_fractor:
+    name: Fractor
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '8.3' ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          show-progress: false
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          extensions: intl, zip
+          ini-values: memory_limit=-1, error_reporting=E_ALL, display_errors=On
+          php-version: ${{ matrix.php-version }}
+
+      - name: Install dependencies
+        run: composer install ${{ env.COMPOSER_INSTALL_FLAGS }} ${{ env.COMPOSER_FLAGS }}
+
+      - name: Run fractor
+        run: composer fractor
