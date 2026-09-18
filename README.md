@@ -29,7 +29,7 @@ will then be parsed to create the embed url for the iframe.
 
 | MapGeoAdmin | TYPO3    | PHP       | Support / Development                |
 |-------------|----------|-----------|--------------------------------------|
-| 4.x         | 13 LTS   | 8.3       | features, bugfixes, security updates |
+| 4.x         | 13 LTS   | 8.2 - 8.5 | features, bugfixes, security updates |
 | 3.x         | 11 LTS   | 8.1 - 8.3 | none                                 |
 | 2.x         | 8, 9 LTS | 7.2 - 7.4 | none                                 |
 | 1.x         | 8, 9 LTS | 7.0 - 7.1 | none                                 |
