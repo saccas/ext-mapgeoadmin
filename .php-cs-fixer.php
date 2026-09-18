@@ -10,6 +10,12 @@ return CsFixerConfig::create()
         (new Finder())
             ->ignoreVCSIgnored(true)
             ->in(realpath(__DIR__))
+            ->exclude([
+                '.Build',
+                '.github',
+                'config',
+                'var'
+            ])
     )
     ->addRules([
         'fully_qualified_strict_types' => [
