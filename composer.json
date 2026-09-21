@@ -10,7 +10,7 @@
         }
     },
     "require": {
-        "php": ">= 8.3 < 8.4",
+        "php": "^8.2",
 		"typo3/cms-backend": "^13.4",
 		"typo3/cms-core": "^13.4",
 		"typo3/cms-extbase": "^13.4",
@@ -18,21 +18,19 @@
 		"typo3/cms-frontend": "^13.4"
     },
 	"require-dev": {
-		"a9f/typo3-fractor": "^0.5.0",
-		"phpstan/extension-installer": "^1.4",
-		"phpstan/phpstan": "^2.1",
-		"saschaegerer/phpstan-typo3": "^2.1",
-		"ssch/typo3-rector": "^3.1",
-		"typo3/coding-standards": "^0.8.0",
-        "typo3/cms-install": "^13.4"
+        "phpstan/extension-installer": "^1.4",
+        "phpstan/phpstan": "^2.1",
+        "saschaegerer/phpstan-typo3": "^2.1",
+        "ssch/typo3-rector": "^3.1",
+        "typo3/cms-install": "^13.4",
+        "typo3/coding-standards": "^0.8.0"
     },
     "scripts": {
         "lint": [
-            "! find Classes -type f -name \"*.php\" -exec php -d error_reporting=32767 -l {} \\; 2>&1 >&- | grep \"^\"",
-            "! find Tests -type f -name \"*.php\" -exec php -d error_reporting=32767 -l {} \\; 2>&1 >&- | grep \"^\""
+            "! find Classes Configuration -type f -name \"*.php\" -exec php -d error_reporting=32767 -l {} \\; 2>&1 >&- | grep \"^\""
         ],
-		"cs": "./.Build/vendor/bin/php-cs-fixer fix -v --config=./Build/.php-cs-fixer.php --diff --dry-run ",
-		"rector": "./.Build/vendor/bin/rector process -v --config=./Build/rector.php --output-format=console --dry-run"
+		"cs": ".Build/vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php -v --using-cache=no --diff --dry-run ",
+		"rector": ".Build/vendor/bin/rector process -c rector.php --clear-cache --output-format=console --dry-run"
 	},
     "replace": {
         "typo3-ter/mapgeoadmin": "self.version"
@@ -42,7 +40,6 @@
 		"sort-packages": true,
 		"vendor-dir": ".Build/vendor",
         "allow-plugins": {
-			"a9f/fractor-extension-installer": true,
 			"phpstan/extension-installer": true,
 			"typo3/class-alias-loader": true,
 			"typo3/cms-composer-installers": true

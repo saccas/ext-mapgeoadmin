@@ -16,6 +16,9 @@ class EmbedUrlService
     ) {
     }
 
+    /**
+     * @param array<mixed> $configuration
+     */
     public function getEmbededUrl(array $configuration): string
     {
         $iFrameUri = $this->getMapUriFromSettings($configuration);
@@ -33,6 +36,9 @@ class EmbedUrlService
         return $this->contentObjectRenderer->typoLink_URL($iframeLinkConf);
     }
 
+    /**
+     * @param array<mixed> $configuration
+     */
     private function getMapUriFromSettings(array $configuration): string
     {
         $iFrameUri = ArrayUtility::getValueByPath($configuration, 'mapgeoadmin/url');

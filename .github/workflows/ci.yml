@@ -1,0 +1,133 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-composer:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: 8.4
+          coverage: none
+          tools: composer:v2
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Validate composer.json
+        run: composer validate
+
+  php-linting:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: [ '8.2', '8.3', '8.4', '8.5']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: 'Install PHP'
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '${{ matrix.php-version }}'
+          coverage: 'none'
+
+      - name: 'PHP lint'
+        run: |
+          find *.php Classes Configuration -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+
+  coding-guideline:
+    runs-on: ubuntu-24.04
+    needs:
+      - 'check-composer'
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: 'Install PHP'
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: '8.2'
+          coverage: 'none'
+          tools: 'composer:v2'
+        env:
+          COMPOSER_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Resolve Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-coding-guideline-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            composer-${{ runner.os }}-coding-guideline-
+
+      - name: 'Install dependencies'
+        run: composer install --no-progress --no-interaction --optimize-autoloader
+
+      - name: 'Coding Guideline'
+        run: .Build/vendor/bin/php-cs-fixer fix --dry-run --diff
+
+  phpstan:
+    name: TYPO3 ${{ matrix.typo3 }} / PHP ${{ matrix.php }}
+    runs-on: ubuntu-24.04
+    needs:
+      - 'check-composer'
+    strategy:
+      fail-fast: false
+      max-parallel: 6
+      matrix:
+        typo3: [ '^13.4' ]
+        php-version: [ '8.2', '8.3', '8.4', '8.5' ]
+
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Set up PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2
+          ini-values: memory_limit=-1
+          extensions: intl, mbstring, mysqli, pdo_mysql, zip
+          coverage: none
+
+      - name: Resolve Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - name: Cache Composer downloads
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-${{ matrix.php-version }}-${{ matrix.typo3 }}-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php-version }}-${{ matrix.typo3 }}-
+            composer-${{ runner.os }}-${{ matrix.php-version }}-
+
+      - name: Install dependencies
+        id: install
+        run: |
+          composer update --no-progress --no-interaction --no-audit --optimize-autoloader \
+              --with typo3/cms-core:'${{ matrix.typo3 }}'
+
+      - name: PHPStan
+        run: .Build/vendor/bin/phpstan --configuration=phpstan.neon --error-format=github --no-progress
