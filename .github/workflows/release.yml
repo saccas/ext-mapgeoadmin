@@ -1,0 +1,124 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version without leading "v", e.g. 4.1.0 or 4.1.0-beta.1'
+        required: true
+        type: string
+
+permissions:
+  contents: write # push the tag, create the GitHub Release
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0 # full history and all tags, so the changelog can diff against the previous tag
+
+      - name: Validate version input
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$GITHUB_REF_NAME" != 'main' ]]; then
+              echo "::error::Releases are cut from main only, got '$GITHUB_REF_NAME'."
+              exit 1
+          fi
+          if ! [[ "$VERSION" =~ ^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}(-[0-9A-Za-z.-]+)?$ ]]; then
+              echo "::error::Invalid version '$VERSION'. Use e.g. 4.1.0 or 4.1.0-beta.1 (no leading 'v')."
+              exit 1
+          fi
+          # Guard against duplicate/overwritten releases: the tag must not exist yet.
+          # checkout with fetch-depth: 0 fetches all tags, so a local check is authoritative.
+          if git rev-parse -q --verify "refs/tags/$VERSION" >/dev/null; then
+              echo "::error::Tag '$VERSION' already exists. Choose a new version."
+              exit 1
+          fi
+          echo "Version '$VERSION' is valid and unused."
+
+      - name: Determine prerelease flag
+        id: meta
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          if [[ "$VERSION" == *-* ]]; then
+              echo 'prerelease=true' >> "$GITHUB_OUTPUT"
+          else
+              echo 'prerelease=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Generate release notes
+        env:
+          VERSION: ${{ inputs.version }}
+          PRERELEASE: ${{ steps.meta.outputs.prerelease }}
+          NOTES: ${{ runner.temp }}/release-notes.md
+        run: |
+          # Tag names never carry a leading 'v'. The legacy v3.0.x tags are excluded
+          # on purpose: '--sort=version:refname' sorts 'v3.0.1' above '4.0.0', which
+          # would pick a three-year-old tag as the predecessor.
+          #
+          # For a stable release, diff against the previous *stable* tag so the notes
+          # collect everything since the last stable — including changes already shipped
+          # in intermediate betas. For a prerelease, diff against the nearest tag of any
+          # kind (beta or stable) so each beta only lists its own delta.
+          if [[ "$PRERELEASE" == 'true' ]]; then
+              PREV="$(git tag --list '[0-9]*' --sort=-version:refname | head -n1)"
+          else
+              PREV="$(git tag --list '[0-9]*' --sort=-version:refname | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | head -n1 || true)"
+          fi
+          if [[ -n "$PREV" ]]; then
+              RANGE="$PREV..HEAD"
+              COMPARE="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/compare/$PREV...$VERSION"
+          else
+              RANGE='HEAD'
+              COMPARE=''
+          fi
+          echo "Collecting commits in range '$RANGE'."
+
+          features="$(git log "$RANGE" --no-merges --pretty='- %s' --grep='^\[FEATURE\]')"
+          bugfixes="$(git log "$RANGE" --no-merges --pretty='- %s' --grep='^\[BUGFIX\]')"
+          # Everything that is not a FEATURE or BUGFIX (tasks, and any un-prefixed commits)
+          others="$(git log "$RANGE" --no-merges --pretty='- %s' --invert-grep --grep='^\[FEATURE\]' --grep='^\[BUGFIX\]')"
+
+          # Written to a file instead of GITHUB_OUTPUT: no delimiter juggling, no size limit.
+          # It lives in RUNNER_TEMP, so the checkout stays clean and the notes can
+          # never end up in a commit or in the tag's git archive.
+          : > "$NOTES"
+          if [[ -n "$features" ]]; then
+              printf '## Features\n\n%s\n\n' "$features" >> "$NOTES"
+          fi
+          if [[ -n "$bugfixes" ]]; then
+              printf '## Bugfixes\n\n%s\n\n' "$bugfixes" >> "$NOTES"
+          fi
+          if [[ -n "$others" ]]; then
+              printf '## Tasks & Maintenance\n\n%s\n\n' "$others" >> "$NOTES"
+          fi
+          if [[ -n "$COMPARE" ]]; then
+              printf '**Full changelog:** %s\n' "$COMPARE" >> "$NOTES"
+          fi
+          cat "$NOTES"
+
+      - name: Create and push tag
+        env:
+          VERSION: ${{ inputs.version }}
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git tag -a "$VERSION" -m "$VERSION"
+          git push origin "refs/tags/$VERSION"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@3d0d9888cb7fd7b750713d6e236d1fcb99157228 # v3.0.2
+        with:
+          tag_name: ${{ inputs.version }}
+          name: ${{ inputs.version }}
+          body_path: ${{ runner.temp }}/release-notes.md
+          prerelease: ${{ steps.meta.outputs.prerelease }}
+          make_latest: ${{ steps.meta.outputs.prerelease == 'false' }}
