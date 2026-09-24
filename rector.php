@@ -18,11 +18,11 @@ return RectorConfig::configure()
         __DIR__ . '/.php-cs-fixer.php',
         __DIR__ . '/rector.php',
     ])
-    ->withImportNames(false, true, false, true)
+    ->withImportNames(false, true, false)
     ->withPhpVersion(PhpVersion::PHP_82)
     ->withSets([
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        LevelSetList::UP_TO_PHP_85,
+        LevelSetList::UP_TO_PHP_82,
         Typo3LevelSetList::UP_TO_TYPO3_13,
     ])
     ->withPHPStanConfigs([

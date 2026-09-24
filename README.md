@@ -1,4 +1,5 @@
 [![TYPO3 13](https://img.shields.io/badge/TYPO3-13-orange.svg)](https://get.typo3.org/version/13)
+[![TYPO3 14](https://img.shields.io/badge/TYPO3-14-orange.svg)](https://get.typo3.org/version/14)
 
 # TYPO3 Extension `mapgeoadmin`
 
@@ -27,11 +28,9 @@ will then be parsed to create the embed url for the iframe.
 
 ## Which version for which TYPO3 and PHP?
 
-| MapGeoAdmin | TYPO3    | PHP       | Support / Development                |
-|-------------|----------|-----------|--------------------------------------|
-| 4.x         | 13 LTS   | 8.2 - 8.5 | features, bugfixes, security updates |
-| 3.x         | 11 LTS   | 8.1 - 8.3 | none                                 |
-| 2.x         | 8, 9 LTS | 7.2 - 7.4 | none                                 |
-| 1.x         | 8, 9 LTS | 7.0 - 7.1 | none                                 |
-
-
+| MapGeoAdmin | TYPO3        | PHP       | Support / Development                |
+|-------------|--------------|-----------|--------------------------------------|
+| 4.x         | 13, 14 LTS   | 8.2 - 8.5 | features, bugfixes, security updates |
+| 3.x         | 11 LTS       | 8.1 - 8.3 | none                                 |
+| 2.x         | 8, 9 LTS     | 7.2 - 7.4 | none                                 |
+| 1.x         | 8, 9 LTS     | 7.0 - 7.1 | none                                 |
